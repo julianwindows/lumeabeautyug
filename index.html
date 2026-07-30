@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="icon" type="image/png" href="assets/Lumea Logo.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LUMEA BEAUTY — Illuminate Your Beauty</title>
+<link rel="icon" type="image/png" href="assets/Lumea Favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -73,7 +73,7 @@
   }
   .logo .mark{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--ivory);font-weight:600;letter-spacing:0.22em;}
   .logo .sub{font-size:0.55rem;letter-spacing:0.5em;color:var(--gold);margin-top:2px;}
-  .logo-img{height:70px;width:auto;display:block;}
+  .logo-img{height:48px;width:auto;display:block;}
 
   nav.links{display:flex;gap:44px;}
   nav.links a{
@@ -106,6 +106,12 @@
       radial-gradient(ellipse at 50% 40%, rgba(200,162,77,0.10), transparent 60%),
       linear-gradient(180deg, #0a0908 0%, #0d0b09 100%);
   }
+  @supports (height: 100svh){
+    .hero{height:100svh;}
+  }
+  @media (max-width:640px){
+    .hero{min-height:560px;}
+  }
   .hero-beam{
     position:absolute;top:-20%;left:-10%;width:60%;height:180%;
     background:linear-gradient(100deg, transparent 40%, rgba(232,217,171,0.06) 48%, rgba(200,162,77,0.22) 50%, rgba(232,217,171,0.06) 52%, transparent 60%);
@@ -113,7 +119,7 @@
     pointer-events:none;
   }
   .hero-banner{
-    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;
     z-index:-2;
     filter:grayscale(0.05) brightness(0.95);
     animation:heroZoom 18s ease-in-out infinite alternate;
@@ -201,7 +207,7 @@
   }
   .card:hover{transform:translateY(-8px);border-color:var(--gold-dim);box-shadow:0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,162,77,0.25);}
   .card-img{
-    position:relative;aspect-ratio:3/4;overflow:hidden;background:#0e0d0c;
+    position:relative;aspect-ratio:3/4;min-height:280px;overflow:hidden;background:#0e0d0c;
   }
   .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease, filter .8s ease;filter:grayscale(15%) brightness(0.9);}
   .card:hover .card-img img{transform:scale(1.08);filter:grayscale(0%) brightness(1);}
@@ -741,8 +747,7 @@ function renderProducts(){
     <div class="card" data-id="${p.id}">
       <div class="card-img">
         ${p.tag ? `<span class="card-tag">${p.tag}</span>` : ""}
-        <img src="${p.img}" alt="${p.name}">
-        <div class="card-quick">View Details</div>
+        <img src="${p.img}" alt="${p.name}" loading="eager" decoding="async">
       </div>
       <div class="card-body">
         <h3 class="cname">${p.name}</h3>
@@ -756,6 +761,14 @@ function renderProducts(){
   `).join('');
 }
 renderProducts();
+
+// Mobile browsers can defer loading images that start inside a hidden
+// (opacity:0) reveal container. Re-render once everything has settled
+// so the images are forced to load — mirrors what happens when the
+// user switches filters, which was already fixing it manually.
+window.addEventListener('load', ()=>{
+  setTimeout(renderProducts, 50);
+});
 
 // filter buttons
 document.querySelectorAll('.filter-btn').forEach(btn=>{
