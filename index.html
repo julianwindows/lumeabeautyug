@@ -72,6 +72,7 @@
   }
   .logo .mark{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--ivory);font-weight:600;letter-spacing:0.22em;}
   .logo .sub{font-size:0.55rem;letter-spacing:0.5em;color:var(--gold);margin-top:2px;}
+  .logo-img{height:70px;width:auto;display:block;}
 
   nav.links{display:flex;gap:44px;}
   nav.links a{
@@ -98,7 +99,7 @@
 
   /* ---------- HERO ---------- */
   .hero{
-    position:relative;height:100vh;min-height:640px;display:flex;flex-direction:column;
+    position:relative;z-index:0;height:100vh;min-height:640px;display:flex;flex-direction:column;
     align-items:center;justify-content:center;text-align:center;overflow:hidden;
     background:
       radial-gradient(ellipse at 50% 40%, rgba(200,162,77,0.10), transparent 60%),
@@ -109,6 +110,22 @@
     background:linear-gradient(100deg, transparent 40%, rgba(232,217,171,0.06) 48%, rgba(200,162,77,0.22) 50%, rgba(232,217,171,0.06) 52%, transparent 60%);
     animation:sweep 9s ease-in-out infinite;
     pointer-events:none;
+  }
+  .hero-banner{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    z-index:-2;
+    filter:grayscale(0.05) brightness(0.95);
+    animation:heroZoom 18s ease-in-out infinite alternate;
+  }
+  @keyframes heroZoom{
+    from{transform:scale(1);}
+    to{transform:scale(1.08);}
+  }
+  .hero-overlay{
+    position:absolute;inset:0;z-index:-1;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(200,162,77,0.10), transparent 60%),
+      linear-gradient(180deg, rgba(10,9,8,0.10) 0%, rgba(10,9,8,0.35) 55%, rgba(10,9,8,0.75) 100%);
   }
   @keyframes sweep{
     0%{transform:translateX(-20%) rotate(8deg);}
@@ -378,7 +395,7 @@
 <!-- ============ NAV ============ -->
 <header id="siteHeader">
   <div class="burger" id="burger"><span></span><span></span><span></span></div>
-  <div class="logo"><span class="mark">LUMEA</span><span class="sub">BEAUTY</span></div>
+  <div class="logo"><img src="assets/Lumea Logo.png" alt="Lumea Beauty" class="logo-img"></div>
   <nav class="links" id="navLinks">
     <a href="#home" class="nav-link active">Home</a>
     <a href="#shop" class="nav-link">Shop</a>
@@ -401,6 +418,8 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="home">
+  <img src="assets/Lumea Banner.png" alt="Lumea Beauty" class="hero-banner">
+  <div class="hero-overlay"></div>
   <div class="hero-beam"></div>
   <p class="hero-mark">EST. 2019 · KAMPALA</p>
   <h1>LUMEA <span>BEAUTY</span></h1>
@@ -419,18 +438,19 @@
   </div>
   <div class="filter-row reveal">
     <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="skincare">Skincare</button>
-    <button class="filter-btn" data-filter="makeup">Makeup</button>
-    <button class="filter-btn" data-filter="fragrance">Fragrance</button>
+	<button class="filter-btn" data-filter="creams">Creams</button>
+	<button class="filter-btn" data-filter="toners">Toners</button>
+	<button class="filter-btn" data-filter="serums">Serums</button>
+	<button class="filter-btn" data-filter="soaps-scrubs">Soaps & Scrubs</button>
   </div>
-  <div class="product-grid" id="productGrid"></div>
+  <div class="product-grid reveal" id="productGrid"></div>
 </section>
 
 <!-- ============ ABOUT ============ -->
 <section id="about">
   <div class="about-img reveal">
     <div class="frame"></div>
-    <img src="assets/products.png" alt="Lumea Beauty founder's studio, gold-lit vanity with skincare bottles">
+    <img src="assets/lumea products.png" alt="Lumea Beauty founder's studio, gold-lit vanity with skincare bottles">
   </div>
   <div class="about-text reveal">
     <p class="eyebrow">Our Story</p>
@@ -473,7 +493,7 @@
 
 <!-- ============ FOOTER ============ -->
 <footer>
-  <div class="logo"><span class="mark">LUMEA</span><span class="sub">BEAUTY</span></div>
+  <div class="logo"><img src="assets/Lumea Logo.png" alt="Lumea Beauty" class="logo-img"></div>
   <div class="social">
     <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
     <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M15 8h-2a2 2 0 0 0-2 2v10M9 12h6"/><path d="M8 12v8"/></svg></a>
@@ -620,68 +640,84 @@
 ========================================================= */
 const PRODUCTS = [
   {
-    id: 1, category: "skincare", tag: "Bestseller",
+    id: 1, category: "creams", tag: "Bestseller",
     name: "Hydrasoothe Moisturiser", price: 25000,
-    note: "24k gold + vitamin C",
+    note: "Hydration & Barrier Care Formula",
     img: "assets/Hydrasoothe.png",
-    desc: "A weightless, fast-absorbing serum infused with 24-karat gold flake and stabilized vitamin C to brighten, firm, and awaken tired skin.",
-    benefits: ["Visibly brightens & evens tone", "Firms and smooths fine lines", "Lightweight, non-greasy finish"]
+    desc: "A premium moisturizer from Lumea Beauty, formulated to deliver lasting hydration, smoothness, and barrier protection for healthy, radiant skin.",
+    benefits: ["Deeply hydrates", "Smooths skin texture", "Strengthens skin barrier"]
   },
   {
-    id: 2, category: "skincare", tag: "New",
-    name: "Brightening Cream", price: 55000,
-    note: "overnight repair",
-    img: "assets/Brightening.png",
-    desc: "A rich, brightening cream that works while you sleep, restoring moisture and elasticity with peptides and black truffle extract.",
-    benefits: ["Deep overnight hydration", "Improves elasticity", "Wakes up to visibly plumper skin"]
+    id: 2, category: "serums", tag: "",
+    name: "Hydrating Serum", price: 90000,
+    note: "Deep Hydration Supplement",
+    img: "assets/Hydrating Serum.png",
+    desc: "A premium hydration solution from Lumea Beauty, crafted to restore moisture balance, enhance radiance, and keep your skin healthy and glowing.",
+    benefits: ["Provides deep hydration", "Improves skin elasticity", "Perfect for all skin types"]
   },
   {
-    id: 3, category: "makeup", tag: "Limited",
+    id: 3, category: "creams", tag: "Limited",
     name: "Lightening Cream", price: 70000,
-    note: "liquid gold glow",
-    img: "assets/Lightening.png",
-    desc: "A silky liquid highlighter that melts into skin for a lit-from-within glow, buildable from a soft sheen to full luminosity.",
-    benefits: ["Buildable, blendable finish", "Long-wearing luminous glow", "Suits all skin tones"]
+    note: "Skin Tone Perfecting Formula",
+    img: "assets/LighteningCream.png",
+    desc: "A premium skincare solution from Lumea Beauty, crafted to illuminate and perfect your natural beauty.",
+    benefits: ["Fades dark spots", "Brightens complexion", "Evens skin tone"]
   },
   {
-    id: 4, category: "makeup", tag: "Bestseller",
+    id: 4, category: "creams", tag: "Bestseller",
     name: "Pimple Cream", price: 40000,
-    note: "buttery matte-satin",
-    img: "assets/Lightening.png",
-    desc: "A richly pigmented, comfortable lipstick with a satin-matte finish that glides on and stays put without drying the lips.",
-    benefits: ["8-hour comfortable wear", "Hydrating shea + jojoba oil", "One-swipe full pigment"]
+    note: "Acne Control Formula",
+    img: "assets/PimpleCr.png",
+    desc: "Crafted by Lumea Beauty, this targeted acne solution is designed to restore clarity and confidence by keeping your skin fresh, smooth, and blemish‑free.",
+    benefits: ["Clears pimples", "Reduces redness", "Prevents breakouts"]
   },
   {
-    id: 5, category: "fragrance", tag: "Signature",
-    name: "Brightening Cream", price: 35000,
-    note: "amber, oud & gold musk",
+    id: 5, category: "toners", tag: "Signature",
+    name: "Glow Escence Toner", price: 35000,
+    note: "Revitalizing Formula for Radiant Skin",
+    img: "assets/EscenceT.png",
+    desc: "A revitalizing formula that balances skin tone, hydrates deeply, and leaves your complexion radiant and refreshed.",
+    benefits: ["Balances and refines skin texture for a radiant glow", "Hydrates and revitalizes tired, dull skin", "Supports a clean, refreshed complexion"]
+  },
+  {
+    id: 6, category: "creams", tag: "New",
+    name: "Brightening Cream", price: 55000,
+    note: "Radiance Boost Formula",
     img: "assets/Brightening.png",
-    desc: "Our signature scent — warm amber and rare oud wrapped in golden musk, designed to linger like the last light of sunset.",
-    benefits: ["12+ hour wear", "Rare oud & amber accord", "Refillable heirloom bottle"]
+    desc: "A premium skincare solution from Lumea Beauty, designed to illuminate your complexion and enhance natural radiance with every use.",
+    benefits: ["Reduces dark spots", "Promotes radiant skin", "Evens skin tone"]
   },
   {
-    id: 6, category: "skincare", tag: "",
-    name: "Pure Silk Cleansing Oil", price: 90000,
-    note: "gentle, oil-based",
-    img: "assets/Brightening.png",
-    desc: "A silky cleansing oil that melts away makeup and impurities while preserving the skin's natural moisture barrier.",
-    benefits: ["Removes makeup in one step", "Preserves skin barrier", "Leaves skin soft, never stripped"]
+    id: 7, category: "creams", tag: "",
+    name: "Hyperpigmentation Cream", price: 25000,
+    note: "Premium Skincare Supplement",
+    img: "assets/Hyperpig.png",
+    desc: "A trusted solution from Lumea Beauty, formulated to target stubborn pigmentation and enhance your skin’s natural radiance.",
+    benefits: ["Fades hyperpigmentation", "Restores even skin tone", "Improves skin clarity"]
   },
   {
-    id: 7, category: "makeup", tag: "",
-    name: "Brightening Cream", price: 25000,
-    note: "volumizing, gold pigment",
-    img: "assets/Brightening.png",
-    desc: "A volumizing mascara with a hint of gold shimmer pigment for lashes that catch the light without ever looking heavy.",
-    benefits: ["Buildable volume & length", "Subtle gold shimmer", "Smudge-resistant, 12-hour hold"]
+    id: 8, category: "toners", tag: "New",
+    name: "Pimple Toner", price: 55000,
+    note: "Radiance Boost Formula",
+    img: "assets/PimpleToner.png",
+    desc: "A premium toner from Lumea Beauty, designed to clear imperfections, refine texture, and boost radiance for healthier, glowing skin.",
+    benefits: ["Unclogs pores", "Treats white & blackheads", "Exfoliates rough skin"]
   },
   {
-    id: 8, category: "fragrance", tag: "New",
-    name: "Hydrasoothe Moisturiser", price: 55000,
-    note: "white florals & musk",
-    img: "assets/Hydrasoothe.png",
-    desc: "A delicate, layerable body mist of white florals and soft musk — the perfect everyday companion to our signature parfum.",
-    benefits: ["Light, everyday wear", "Layers beautifully with EDP", "Silky, non-sticky finish"]
+    id: 9, category: "soaps-scrubs", tag: "New",
+    name: "Face & Body Scrub", price: 55000,
+    note: "Exfoliating & Renewal Formula",
+    img: "assets/Scrub.png",
+    desc: "A premium exfoliating solution from Lumea Beauty, designed to renew, refresh, and illuminate your natural glow.",
+    benefits: ["Removes dead skin", "Unclogs pores", "Smooths and refreshes"]
+  },
+  {
+    id: 10, category: "soaps-scrubs", tag: "New",
+    name: "Lumea Beauty Soap", price: 55000,
+    note: "Cleansing Formula",
+    img: "assets/Soap.png",
+    desc: "A natural cleansing solution from Lumea Beauty, formulated to refresh, moisturize, and keep your skin healthy every day.",
+    benefits: ["Cleanses deeply", "Moisturizes skin", "Leaves skin fresh"]
   }
 ];
 
@@ -1125,17 +1161,48 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 /* =========================================================
    CONTACT FORM
 ========================================================= */
-document.getElementById('contactForm').addEventListener('submit', (e)=>{
+document.getElementById('contactForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  const name = document.getElementById('cname').value.trim();
-  document.getElementById('formMsg').textContent = `Thank you, ${name}. We'll be in touch shortly.`;
-  e.target.reset();
-  setTimeout(()=>{ document.getElementById('formMsg').textContent = ''; }, 5000);
-});
 
-/* search icon: simple UX affordance scrolling to shop */
-document.getElementById('searchBtn').addEventListener('click', ()=>{
-  document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+  const name = document.getElementById('cname').value.trim();
+  const email = document.getElementById('cemail').value.trim();
+  const message = document.getElementById('cmessage').value.trim();
+  const formMsg = document.getElementById('formMsg');
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+
+  submitBtn.disabled = true;
+  formMsg.textContent = 'Sending...';
+
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      access_key: 'eebbe4b5-91e6-44f0-85ec-fbf8fec9b7b0', // same key as your order form
+      subject: `New Contact Message from ${name} — Lumea Beauty`,
+      from_name: 'Lumea Beauty Website',
+      name: name,
+      email: email,       // lets you hit "Reply" and reach the customer directly
+      message: message
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        formMsg.textContent = `Thank you, ${name}. We'll be in touch shortly.`;
+        e.target.reset();
+      } else {
+        console.error('Web3Forms rejected the submission:', data);
+        formMsg.textContent = "Something went wrong — please email us directly.";
+      }
+    })
+    .catch(err => {
+      console.error('Contact form network error:', err);
+      formMsg.textContent = "Something went wrong — please email us directly.";
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      setTimeout(() => { formMsg.textContent = ''; }, 5000);
+    });
 });
 </script>
 </body>
